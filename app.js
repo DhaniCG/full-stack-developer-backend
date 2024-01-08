@@ -11,7 +11,7 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-export const handler = serverless(app);
+// export const handler = serverless(app);
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
