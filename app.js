@@ -16,7 +16,7 @@ app.use(cors());
 const transporter = nodemailer.createTransport({
     name: process.env.EMAIL_HOST,
     host: process.env.EMAIL_HOST,
-    port: 465,
+    port: 25,
     auth: {
         user: "dhani@dhanidesigns.com",
         pass: process.env.PASSWORD,
