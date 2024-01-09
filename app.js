@@ -16,6 +16,7 @@ app.use(cors());
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: 465,
+    secure: true,
     auth: {
         user: "dhani@dhanidesigns.com",
         pass: process.env.PASSWORD,
@@ -32,9 +33,9 @@ const sendEmail = async (title, message) => {
 
     try {
         const info = await transporter.sendMail(mailOptions);
-        return `Email sent: ${info.response}`;
+        console.log(`Email sent: ${info.response}`);
     } catch (err) {
-        return `Error sending email: ${err}`;
+        console.log(`Error sending email: ${err}`);
     }
 }
 
