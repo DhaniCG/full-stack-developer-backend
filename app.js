@@ -51,7 +51,6 @@ app.get("/", (req, res) => {
         }
     });
 
-    sendEmail("title", "details");
     res.sendStatus(200);
 })
 
