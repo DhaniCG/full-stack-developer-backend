@@ -14,9 +14,9 @@ app.use(cors());
 // export const handler = serverless(app);
 
 const transporter = nodemailer.createTransport({
-    name: process.env.NAME_HOST,
+    name: process.env.EMAIL_HOST,
     host: process.env.EMAIL_HOST,
-    port: 26,
+    port: 465,
     auth: {
         user: "dhani@dhanidesigns.com",
         pass: process.env.PASSWORD,
