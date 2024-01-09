@@ -20,6 +20,9 @@ const transporter = nodemailer.createTransport({
         user: "dhani@dhanidesigns.com",
         pass: process.env.PASSWORD,
     },
+    tls:{
+        rejectunauthorized: false
+    }
 });
 
 const sendEmail = async (title, message) => {
