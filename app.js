@@ -2,7 +2,6 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import serverless from "serverless-http";
 import nodemailer from "nodemailer"
 
 const app = express();
@@ -10,8 +9,6 @@ const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-
-// export const handler = serverless(app);
 
 const transporter = nodemailer.createTransport({
     name: process.env.EMAIL_HOST,
