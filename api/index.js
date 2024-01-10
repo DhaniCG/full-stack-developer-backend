@@ -2,7 +2,6 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import serverless from "serverless-http";
 import nodemailer from "nodemailer"
 
 const app = express();
@@ -11,15 +10,17 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-export const handler = serverless(app);
-
 const transporter = nodemailer.createTransport({
+    name: process.env.EMAIL_HOST,
     host: process.env.EMAIL_HOST,
     port: 465,
     auth: {
         user: "dhani@dhanidesigns.com",
         pass: process.env.PASSWORD,
     },
+    tls:{
+        rejectunauthorized: false
+    }
 });
 
 const sendEmail = async (title, message) => {
@@ -28,14 +29,10 @@ const sendEmail = async (title, message) => {
         to: 'dhanigamer777@gmail.com',
         subject: title,
         html: message,
-      };
+    };
 
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        return `Email sent: ${info.response}`;
-    } catch (err) {
-        return `Error sending email: ${err}`;
-    }
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`Email sent: ${info.response}`);
 }
 
 app.get("/", (req, res) => {
@@ -47,7 +44,6 @@ app.get("/", (req, res) => {
         }
     });
 
-    sendEmail("title", "details");
     res.sendStatus(200);
 })
 
@@ -89,5 +85,3 @@ app.get("/failed-submission", (req, res) => {
 })
 
 app.listen(port, console.log(`Started on port ${port}`));
-
-module.exports = app;

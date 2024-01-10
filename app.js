@@ -29,14 +29,10 @@ const sendEmail = async (title, message) => {
         to: 'dhanigamer777@gmail.com',
         subject: title,
         html: message,
-      };
+    };
 
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log(`Email sent: ${info.response}`);
-    } catch (err) {
-        console.log(`Error sending email: ${err}`);
-    }
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`Email sent: ${info.response}`);
 }
 
 app.get("/", (req, res) => {
