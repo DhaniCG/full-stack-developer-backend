@@ -2,7 +2,8 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import nodemailer from "nodemailer"
+// import nodemailer from "nodemailer"
+import { Resend } from "resend";
 
 const app = express();
 const port = 3000;
@@ -10,43 +11,34 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const transporter = nodemailer.createTransport({
-    name: process.env.EMAIL_HOST,
-    host: process.env.EMAIL_HOST,
-    port: 465,
-    auth: {
-        user: "dhani@dhanidesigns.com",
-        pass: process.env.PASSWORD,
-    },
-    tls:{
-        rejectunauthorized: false
-    }
-});
+const resend = new Resend(process.env.RESEND_API);
+
+
 
 const sendEmail = async (title, message) => {
-    const mailOptions = {
-        from: 'dhani@dhanidesigns.com',
-        to: 'dhanigamer777@gmail.com',
+    const mailOptions = resend.emails.send({
+        from: `DhaniDev <onboarding@resend.dev>`,
+        to: 'dhanicg777@gmail.com',
         subject: title,
-        html: message,
-      };
+        html: message
+    });
 
     try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log(`Email sent: ${info.response}`);
+        const info = await mailOptions;
+        console.log(`Email sent: ${info}`);
     } catch (err) {
         console.log(`Error sending email: ${err}`);
     }
 }
 
 app.get("/", (req, res) => {
-    transporter.verify((error, success) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Server is ready to take our messages");
-        }
-    });
+    // transporter.verify((error, success) => {
+    //     if (error) {
+    //         console.log(error);
+    //     } else {
+    //         console.log("Server is ready to take our messages");
+    //     }
+    // });
 
     res.sendStatus(200);
 })
@@ -67,7 +59,7 @@ app.post("/form-submission", (req, res) => {
     `;
 
     try {
-        sendEmail(title, details);
+        console.log(sendEmail(title,details));
         res.sendStatus(200);
     } catch (err) {
         console.error(err);
@@ -80,7 +72,7 @@ app.get("/failed-submission", (req, res) => {
     const detail = "<h3>Something is wrong when someone submitting their form, go ahead and check what's going on with the code!</h3>";
 
     try {
-        sendEmail(title, detail);
+        console.log(sendEmail);
         res.send("Problem has been reported");
     } catch (err) {
         console.error(err);
