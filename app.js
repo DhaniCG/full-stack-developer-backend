@@ -60,7 +60,7 @@ app.post("/form-submission", async (req, res) => {
     try {
         const { data } = await resend.emails.send({
             from: `DhaniDev <onboarding@resend.dev>`,
-            to: 'dhanigamer777@gmail.com',
+            to: "dhanigamer777@gmail.com",
             subject: title,
             html: details
         });
