@@ -15,20 +15,20 @@ const resend = new Resend(process.env.RESEND_API);
 
 
 
-const sendEmail = async (title, message) => {
-    const { data, error } = await resend.emails.send({
-        from: `DhaniDev <onboarding@resend.dev>`,
-        to: 'dhanicg777@gmail.com',
-        subject: title,
-        html: message
-    });
+// const sendEmail = async (title, message) => {
+//     const { data, error } = await resend.emails.send({
+//         from: `DhaniDev <onboarding@resend.dev>`,
+//         to: 'dhanicg777@gmail.com',
+//         subject: title,
+//         html: message
+//     });
 
-    try {
-        console.log(`Email sent: ${JSON.stringify(data)}`);
-    } catch (err) {
-        console.log(`Error sending email: ${JSON.stringify(error)}`);
-    }
-}
+//     try {
+//         console.log(`Email sent: ${JSON.stringify(data)}`);
+//     } catch (err) {
+//         console.log(`Error sending email: ${JSON.stringify(error)}`);
+//     }
+// }
 
 app.get("/", (req, res) => {
     // transporter.verify((error, success) => {
@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
     res.sendStatus(200);
 })
 
-app.post("/form-submission", (req, res) => {
+app.post("/form-submission", async (req, res) => {
     const { name, email, services, budget, projectSize, rate, projectTitle, projectDescription } = req.body;
 
     const title = `New Project: ${projectTitle}`;
@@ -58,7 +58,13 @@ app.post("/form-submission", (req, res) => {
     `;
 
     try {
-        console.log(sendEmail(title,details));
+        const { data } = await resend.emails.send({
+            from: `DhaniDev <onboarding@resend.dev>`,
+            to: 'dhanicg777@gmail.com',
+            subject: title,
+            html: details
+        });
+        console.log(data);
         res.sendStatus(200);
     } catch (err) {
         console.error(err);
