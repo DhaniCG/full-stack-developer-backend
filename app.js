@@ -16,7 +16,7 @@ const resend = new Resend(process.env.RESEND_API);
 
 
 const sendEmail = async (title, message) => {
-    const mailOptions = resend.emails.send({
+    const { data, error } = await resend.emails.send({
         from: `DhaniDev <onboarding@resend.dev>`,
         to: 'dhanicg777@gmail.com',
         subject: title,
@@ -24,10 +24,9 @@ const sendEmail = async (title, message) => {
     });
 
     try {
-        const info = await mailOptions;
-        console.log(`Email sent: ${info}`);
+        console.log(`Email sent: ${JSON.stringify(data)}`);
     } catch (err) {
-        console.log(`Error sending email: ${err}`);
+        console.log(`Error sending email: ${JSON.stringify(error)}`);
     }
 }
 
